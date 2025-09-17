@@ -535,10 +535,11 @@ function logout() {
     if (confirm('Are you sure you want to logout?')) {
         showNotification('Logout successful!', 'success');
         // Redirect to login page after logout
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
     }
 }
 
 
 // Initialize the application when the DOM is loaded
+
 document.addEventListener('DOMContentLoaded', initApp);
