@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         localStorage.setItem("userEmail", email.value.trim());
         localStorage.setItem("userRole", "custom");
-        window.location.href = "index.html";
+        window.location.href = "login.html";
     });
 
     // Demo buttons
@@ -29,3 +29,4 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
