@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KSG Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <div id="login-screen" class="screen active">
+            <div class="login-container">
+                <div class="login-card">
+                    <div class="logo">
+                        <i class="fas fa-boxes-stacked"></i>
+                        <h1>KSG Inventory System</h1>
+                    </div>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                    <div class="demo-logins">
+                        <p>Demo Logins:</p>
+                        <div class="demo-buttons">
+                            <button class="demo-btn" data-role="manager">Manager</button>
+                            <button class="demo-btn" data-role="deputy">Deputy Manager</button>
+                            <button class="demo-btn" data-role="admin">Admin</button>
+                            <button class="demo-btn" data-role="guest">Guest</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

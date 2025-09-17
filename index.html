@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KSG Institutional Inventory System</title>
+
+    <!-- Fonts & Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="main-app" class="screen">
+
+        <!-- ===== HEADER ===== -->
+        <header class="header">
+            <div class="header-left">
+                <button class="sidebar-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="app-title">KSG Inventory System</h1>
+            </div>
+            <div class="header-right">
+                <span class="user-info" id="user-info">Welcome, Sammy</span>
+                <button class="logout-btn" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <h3>Main</h3>
+                    <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="#inventory" class="nav-item" data-section="inventory">
+                        <i class="fas fa-box"></i> Inventory
+                    </a>
+                    <a href="#departments" class="nav-item" data-section="departments">
+                        <i class="fas fa-building"></i> Departments
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Operations</h3>
+                    <a href="#transactions" class="nav-item" data-section="transactions">
+                        <i class="fas fa-exchange-alt"></i> Transactions
+                    </a>
+                    <a href="#suppliers" class="nav-item" data-section="suppliers">
+                        <i class="fas fa-truck"></i> Suppliers
+                    </a>
+                    <a href="#maintenance" class="nav-item" data-section="maintenance">
+                        <i class="fas fa-tools"></i> Maintenance
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <h3>Reports</h3>
+                    <a href="#reports" class="nav-item" data-section="reports">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </a>
+                    <a href="#low-stock" class="nav-item" data-section="low-stock">
+                        <i class="fas fa-exclamation-triangle"></i> Low Stock
+                    </a>
+                </div>
+
+                <div class="nav-section admin-only">
+                    <h3>Administration</h3>
+                    <a href="#users" class="nav-item" data-section="users">
+                        <i class="fas fa-users"></i> User Management
+                    </a>
+                    <a href="#audit-logs" class="nav-item" data-section="audit-logs">
+                        <i class="fas fa-history"></i> Audit Logs
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- ===== MAIN CONTENT ===== -->
+        <main class="main-content">
+
+            <!-- Dashboard -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="section-header">
+                    <h2>Dashboard</h2>
+                    <p>Welcome to KSG Inventory Management System</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card"><i class="fas fa-boxes"></i><div><h3>Total Items</h3><span id="total-items">0</span></div></div>
+                    <div class="stat-card"><i class="fas fa-building"></i><div><h3>Departments</h3><span id="total-departments">0</span></div></div>
+                    <div class="stat-card"><i class="fas fa-exchange-alt"></i><div><h3>Transactions</h3><span id="total-transactions">0</span></div></div>
+                    <div class="stat-card"><i class="fas fa-exclamation-triangle"></i><div><h3>Low Stock</h3><span id="low-stock-count">0</span></div></div>
+                </div>
+
+                <div class="dashboard-charts">
+                    <div class="chart-card">
+                        <h3>Recent Transactions</h3>
+                        <table class="data-table">
+                            <thead><tr><th>Item</th><th>Type</th><th>Qty</th><th>Date</th></tr></thead>
+                            <tbody id="recent-transactions"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3>Low Stock Alerts</h3>
+                        <div id="low-stock-alerts"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Inventory -->
+            <section id="inventory-section" class="content-section">
+                <div class="section-header">
+                    <h2>Inventory Management</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-primary" id="add-item-btn">
+                            <i class="fas fa-plus"></i> Add Item
+                        </button>
+                        <div class="search-box">
+                            <input type="text" id="inventory-search" placeholder="Search inventory...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filters">
+                    <select id="department-filter"><option value="">All Departments</option></select>
+                    <select id="category-filter"><option value="">All Categories</option></select>
+                    <select id="condition-filter">
+                        <option value="">All Conditions</option>
+                        <option value="new">New</option>
+                        <option value="good">Good</option>
+                        <option value="needs_repair">Needs Repair</option>
+                    </select>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Item ID</th><th>Name</th><th>Category</th><th>Department</th>
+                            <th>Quantity</th><th>Unit Cost</th><th>Condition</th><th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-table-body"></tbody>
+                </table>
+
+                <div class="pagination">
+                    <button id="prev-page" class="btn btn-secondary">Previous</button>
+                    <span id="page-info">Page 1 of 1</span>
+                    <button id="next-page" class="btn btn-secondary">Next</button>
+                </div>
+            </section>
+
+            <!-- Other Pages -->
+            <section id="departments-section" class="content-section">
+                <div class="section-header">
+                    <h2>Department Management</h2>
+                    <button class="btn btn-primary" id="add-department-btn">
+                        <i class="fas fa-plus"></i> Add Department
+                    </button>
+                </div>
+                <table class="data-table">
+                    <thead><tr><th>Name</th><th>Description</th><th>Items Count</th><th>Actions</th></tr></thead>
+                    <tbody id="departments-table-body"></tbody>
+                </table>
+            </section>
+
+            <section id="transactions-section" class="content-section"><h2>Transactions</h2></section>
+            <section id="suppliers-section" class="content-section"><h2>Suppliers</h2></section>
+            <section id="maintenance-section" class="content-section"><h2>Maintenance</h2></section>
+            <section id="reports-section" class="content-section"><h2>Reports</h2></section>
+            <section id="low-stock-section" class="content-section"><h2>Low Stock</h2></section>
+            <section id="users-section" class="content-section"><h2>User Management</h2></section>
+            <section id="audit-logs-section" class="content-section"><h2>Audit Logs</h2></section>
+        </main>
+    </div>
+
+    <!-- ===== MODALS ===== -->
+    <div id="add-item-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Item</h3>
+                <span class="close" data-modal="add-item-modal">&times;</span>
+            </div>
+            <form id="add-item-form">
+                <div class="modal-body">
+                    <input type="text" id="item-id" placeholder="Item ID" required>
+                    <input type="text" id="item-name" placeholder="Item Name" required>
+                    <input type="text" id="item-category" placeholder="Category" required>
+                    <input type="number" id="item-quantity" placeholder="Quantity" required>
+                    <input type="number" id="item-unit-cost" placeholder="Unit Cost" step="0.01" required>
+                    <input type="text" id="item-location" placeholder="Location" required>
+                    <select id="item-department" required>
+                        <option value="">Select Department</option>
+                    </select>
+                    <select id="item-condition" required>
+                        <option value="">Select Condition</option>
+                        <option value="new">New</option>
+                        <option value="good">Good</option>
+                        <option value="needs_repair">Needs Repair</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-modal="add-item-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="add-department-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Department</h3>
+                <span class="close" data-modal="add-department-modal">&times;</span>
+            </div>
+            <form id="add-department-form">
+                <div class="modal-body">
+                    <input type="text" id="department-name" placeholder="Department Name" required>
+                    <textarea id="department-description" rows="3" placeholder="Description"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-modal="add-department-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Department</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Reports Section -->
+<section id="reports-section" class="content-section">
+    <div class="section-header">
+        <h2>Reports & Analytics</h2>
+        <div class="section-actions">
+            <button class="btn btn-primary" id="generate-report-btn">
+                <i class="fas fa-download"></i> Generate Report
+            </button>
+            <div class="date-range-picker">
+                <input type="date" id="report-start-date">
+                <span>to</span>
+                <input type="date" id="report-end-date">
+            </div>
+        </div>
+    </div>
+
+    <div class="reports-controls">
+        <select id="report-type">
+            <option value="inventory-summary">Inventory Summary</option>
+            <option value="transaction-history">Transaction History</option>
+            <option value="department-wise">Department-wise Analysis</option>
+            <option value="low-stock">Low Stock Report</option>
+            <option value="maintenance">Maintenance History</option>
+        </select>
+        
+        <select id="report-format">
+            <option value="html">Web View</option>
+            <option value="pdf">PDF</option>
+            <option value="excel">Excel</option>
+        </select>
+    </div>
+
+    <div class="report-content" id="report-content">
+        <div class="report-placeholder">
+            <i class="fas fa-chart-bar"></i>
+            <p>Select a report type and generate to view data</p>
+        </div>
+    </div>
+</section>
+
+<!-- Low Stock Section -->
+<section id="low-stock-section" class="content-section">
+    <div class="section-header">
+        <h2>Low Stock Alerts</h2>
+        <div class="section-actions">
+            <button class="btn btn-primary" id="export-low-stock-btn">
+                <i class="fas fa-download"></i> Export List
+            </button>
+        </div>
+    </div>
+
+    <div class="alert-filters">
+        <select id="alert-severity">
+            <option value="all">All Severities</option>
+            <option value="critical">Critical (0 items)</option>
+            <option value="warning">Warning (1-4 items)</option>
+            <option value="notice">Notice (5-9 items)</option>
+        </select>
+        
+        <select id="alert-department">
+            <option value="all">All Departments</option>
+        </select>
+    </div>
+
+    <div class="alerts-container" id="low-stock-alerts-container">
+        <!-- Alerts will be populated here -->
+    </div>
+</section>
+
+<!-- User Management Section -->
+<section id="users-section" class="content-section">
+    <div class="section-header">
+        <h2>User Management</h2>
+        <button class="btn btn-primary" id="add-user-btn">
+            <i class="fas fa-plus"></i> Add User
+        </button>
+    </div>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Last Login</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="users-table-body"></tbody>
+    </table>
+</section>
+
+<!-- Audit Logs Section -->
+<section id="audit-logs-section" class="content-section">
+    <div class="section-header">
+        <h2>Audit Logs</h2>
+        <div class="section-actions">
+            <button class="btn btn-primary" id="export-audit-btn">
+                <i class="fas fa-download"></i> Export Logs
+            </button>
+            <div class="search-box">
+                <input type="text" id="audit-search" placeholder="Search logs...">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="audit-filters">
+        <select id="audit-action-type">
+            <option value="all">All Actions</option>
+            <option value="create">Item Created</option>
+            <option value="update">Item Updated</option>
+            <option value="delete">Item Deleted</option>
+            <option value="checkout">Check Out</option>
+            <option value="checkin">Check In</option>
+            <option value="user">User Action</option>
+        </select>
+        
+        <select id="audit-user">
+            <option value="all">All Users</option>
+        </select>
+        
+        <div class="date-range-picker">
+            <input type="date" id="audit-start-date">
+            <span>to</span>
+            <input type="date" id="audit-end-date">
+        </div>
+    </div>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>User</th>
+                <th>Action</th>
+                <th>Item/Entity</th>
+                <th>Details</th>
+                <th>IP Address</th>
+            </tr>
+        </thead>
+        <tbody id="audit-logs-body"></tbody>
+    </table>
+
+    <div class="pagination">
+        <button id="audit-prev-page" class="btn btn-secondary">Previous</button>
+        <span id="audit-page-info">Page 1 of 1</span>
+        <button id="audit-next-page" class="btn btn-secondary">Next</button>
+    </div>
+</section>
+
+<!-- Add User Modal -->
+<div id="add-user-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Add New User</h3>
+            <span class="close" data-modal="add-user-modal">&times;</span>
+        </div>
+        <form id="add-user-form">
+            <div class="modal-body">
+                <input type="text" id="user-username" placeholder="Username" required>
+                <input type="password" id="user-password" placeholder="Password" required>
+                <input type="text" id="user-fullname" placeholder="Full Name" required>
+                <input type="email" id="user-email" placeholder="Email" required>
+                
+                <select id="user-role" required>
+                    <option value="">Select Role</option>
+                    <option value="admin">Administrator</option>
+                    <option value="manager">Manager</option>
+                    <option value="user">Regular User</option>
+                    <option value="viewer">Viewer</option>
+                </select>
+                
+                <select id="user-department">
+                    <option value="">Select Department (Optional)</option>
+                </select>
+                
+                <select id="user-status" required>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-modal="add-user-modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Add User</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading-spinner"><div class="spinner"></div></div>
+
+    <!-- External JS -->
+    <script src="script.js"></script>
+</body>
+</html>
